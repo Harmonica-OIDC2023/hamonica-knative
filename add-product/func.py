@@ -1,8 +1,3 @@
-#
-# oci-serverless-demo-python version 1.0.
-# This function connects to the ATP database and performs the basic operations
-# like Fetch/Create/Update/Delete for the products table
-
 import os
 import json
 import requests
@@ -23,7 +18,6 @@ def ords_run_sql(ordsbaseurl, dbschema, dbpwd, sqlQuery):
     print("status code:", r.status_code, flush=True)
     r_json = json.loads(r.text)
     print("sql REST call response", r_json, flush=True)
-#    if r.status_code == 200:
     try:
         for item in r_json["items"]:
             result["sql_statement"] = item["statementText"]
@@ -36,11 +30,8 @@ def ords_run_sql(ordsbaseurl, dbschema, dbpwd, sqlQuery):
     except ValueError:
         print(r.text, flush=True)
         raise
-#    else:
-#        result["error"] = "Error while invoking the SQL Rest endpoint"
     return result
 
-# get the sql query based on the operation extracted from the request URL parameters
 def get_sql_query(queryString, dbUser):
     tableName = dbUser + ".products"
     product_name = queryString['name'][0]
@@ -55,11 +46,10 @@ def main(context: Context):
     parsed_url = urlparse(request_url)
     query_string = parse_qs(parsed_url.query)
 
-    ords_base_url = "https://gefe254a28f61fa-products.adb.us-ashburn-1.oraclecloudapps.com/ords/" # ORDS_BASE_URL
+    ords_base_url = "https://gefe254a28f61fa-products.adb.us-ashburn-1.oraclecloudapps.com/ords/"
 
-    # Read the db credential secrets from the OCI
-    dbuser = "test_user" # DB_USER
-    dbpwd = "Hamonica2023" # DB_PASSWORD
+    dbuser = "test_user"
+    dbpwd = "Hamonica2023"
     sql_query_string = get_sql_query(query_string, dbuser)
 
     result = ords_run_sql(ords_base_url, dbuser, dbpwd, sql_query_string)
