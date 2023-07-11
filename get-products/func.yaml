@@ -1,0 +1,12 @@
+specVersion: 0.35.0
+name: get-products
+runtime: python
+registry: kgw7401
+image: kgw7401/get-products:latest
+imageDigest: sha256:0343774fb24b3ae7549cc50b1ef8aa3e2545f8bf9462d03c8055dfa28031efb7
+created: 2023-06-24T17:41:31.0336+09:00
+build:
+  builder: pack
+  pvcSize: 256Mi
+deploy:
+  namespace: default
